@@ -1,5 +1,7 @@
 package controllers;
 
-public abstract class Controller {
+import java.io.Serializable;
+
+public abstract class Controller implements Serializable {
 
 }

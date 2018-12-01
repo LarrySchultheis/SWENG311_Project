@@ -1,50 +1,51 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Patient extends Model{
+public class Patient extends Model {
+    private String name;
     private String gender;
-    private String dateOfInitialVisit;
     private String doctor;
     private String nurse;
     private String illness;
     private String medication;
-    private String insuranceDetails;
+    private int patientID;
     private ArrayList<Appointment> appointments;
     private ArrayList<FollowUp> followUps;
+    private Insurance insurance;
 
     public Patient ()
     {
+        name = "";
         gender = "";
-        dateOfInitialVisit = "";
         doctor = "";
         nurse = "";
         illness = "";
         medication = "";
-        insuranceDetails = "";
+        patientID = 0;
         appointments = new ArrayList<>();
         followUps = new ArrayList<>();
+        insurance = new Insurance();
     }
 
-    public Patient (String gender, String dateOfInitialVisit, String doctor, String nurse, String illness, String medication, String insuranceDetails)
+    public Patient (String name, String gender, String doctor, String nurse, String illness,
+                    String medication, int patientID, String companyName, String planName, String agentName, int insID)
     {
+        this.name = name;
         this.gender = gender;
-        this.dateOfInitialVisit = dateOfInitialVisit;
         this.doctor = doctor;
         this.nurse = nurse;
         this.illness = illness;
         this.medication = medication;
-        this.insuranceDetails = insuranceDetails;
+        this.patientID = patientID;
         appointments = new ArrayList<>();
         followUps = new ArrayList<>();
+        insurance = new Insurance(companyName, planName, agentName, insID);
     }
 
     public String getGender() {
         return gender;
-    }
-
-    public String getDateOfInitialVisit() {
-        return dateOfInitialVisit;
     }
 
     public String getDoctor() {
@@ -63,8 +64,16 @@ public class Patient extends Model{
         return medication;
     }
 
-    public String getInsuranceDetails() {
-        return insuranceDetails;
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPatientID() {
+        return patientID;
     }
 
     public ArrayList<FollowUp> getFollowUps() {
@@ -87,13 +96,6 @@ public class Patient extends Model{
 
     public boolean setGender(String gender) {
         this.gender = gender;
-
-        boolean valid = false;
-        return valid;
-    }
-
-    public boolean setDateOfInitialVisit(String dateOfInitialVisit) {
-        this.dateOfInitialVisit = dateOfInitialVisit;
 
         boolean valid = false;
         return valid;
@@ -127,8 +129,23 @@ public class Patient extends Model{
         return valid;
     }
 
-    public boolean setInsuranceDetails(String insuranceDetails) {
-        this.insuranceDetails = insuranceDetails;
+    public boolean setInsurance (Insurance I)
+    {
+        this.insurance = I;
+
+        boolean valid = false;
+        return valid;
+    }
+
+    public boolean setName(String name) {
+        this.name = name;
+
+        boolean valid = false;
+        return valid;
+    }
+
+    public boolean setPatientID(int patientID) {
+        this.patientID = patientID;
 
         boolean valid = false;
         return valid;
@@ -137,6 +154,13 @@ public class Patient extends Model{
     @Override
     public String getInfo() {
         String s = "";
+        s += "Patient ID: " + patientID;
+        s += "\nName: " + name;
+        s += "\nGender: " + gender;
+        s += "\nDoctor: " + doctor;
+        s += "\nNurse: " + nurse;
+        s += "\nIllness " + illness;
+        s += "\nMedication " + medication;
 
         return s;
     }

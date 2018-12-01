@@ -1,6 +1,8 @@
 package models;
 
-public class Appointment extends Model{
+import java.io.Serializable;
+
+public class Appointment extends Model {
     private String date;
     private String time;
     private String reason;
