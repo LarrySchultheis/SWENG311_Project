@@ -2,7 +2,7 @@ package models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+            //I added initialDate/Time to these things
 public class Patient extends Model {
     private String name;
     private String gender;
@@ -10,6 +10,7 @@ public class Patient extends Model {
     private String nurse;
     private String illness;
     private String medication;
+    private String initialDate, initialTime;
     private int patientID;
     private ArrayList<Appointment> appointments;
     private ArrayList<FollowUp> followUps;
@@ -23,13 +24,15 @@ public class Patient extends Model {
         nurse = "";
         illness = "";
         medication = "";
+        initialDate = "";
+        initialTime = "";
         patientID = 0;
         appointments = new ArrayList<>();
         followUps = new ArrayList<>();
         insurance = new Insurance();
     }
 
-    public Patient (String name, String gender, String doctor, String nurse, String illness,
+    public Patient (String name, String gender, String doctor, String nurse, String illness, String initialDate, String initialTime,
                     String medication, int patientID, String companyName, String planName, String agentName, int insID)
     {
         this.name = name;
@@ -39,9 +42,19 @@ public class Patient extends Model {
         this.illness = illness;
         this.medication = medication;
         this.patientID = patientID;
+        this.initialDate = initialDate;
+        this.initialTime = initialTime;
         appointments = new ArrayList<>();
         followUps = new ArrayList<>();
         insurance = new Insurance(companyName, planName, agentName, insID);
+    }
+
+    public String getInitialDate() {
+        return initialDate;
+    }
+
+    public String getInitialTime() {
+        return initialTime;
     }
 
     public String getGender() {
@@ -92,6 +105,20 @@ public class Patient extends Model {
     public void addFollowUp (FollowUp F)
     {
         followUps.add(F);
+    }
+
+    public boolean setInitialTime(String initialTime) {
+        this.initialTime = initialTime;
+
+        boolean valid = false;
+        return valid;
+    }
+
+    public boolean setInitialDate(String initialDate) {
+        this.initialDate = initialDate;
+
+        boolean valid = false;
+        return valid;
     }
 
     public boolean setGender(String gender) {
@@ -157,6 +184,8 @@ public class Patient extends Model {
         s += "\nPatient ID: " + patientID;
         s += "\nName: " + name;
         s += "\nGender: " + gender;
+        s += "\nDate: " + initialDate;
+        s += "\nTime: " + initialTime;
         s += "\nDoctor: " + doctor;
         s += "\nNurse: " + nurse;
         s += "\nIllness " + illness;
