@@ -61,6 +61,11 @@ public class Insurance extends Model {
     public String getInfo() {
         String s = "";
 
+        s += "\nInsuranceID: " + this.ID;
+        s += "\nInsurance Company Name: " + this.companyName;
+        s += "\nPlan name: " + this.planName;
+        s += "\nAgent Name: " + this.agentName;
+        s += "\n";
         return s;
     }
 }

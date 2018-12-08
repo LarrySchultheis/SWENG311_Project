@@ -154,13 +154,16 @@ public class Patient extends Model {
     @Override
     public String getInfo() {
         String s = "";
-        s += "Patient ID: " + patientID;
+        s += "\nPatient ID: " + patientID;
         s += "\nName: " + name;
         s += "\nGender: " + gender;
         s += "\nDoctor: " + doctor;
         s += "\nNurse: " + nurse;
         s += "\nIllness " + illness;
         s += "\nMedication " + medication;
+
+        s += "\n\nInsurance Details: " + insurance.getInfo();
+        s += "\n";
 
         return s;
     }

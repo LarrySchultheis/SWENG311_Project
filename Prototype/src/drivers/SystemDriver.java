@@ -10,27 +10,32 @@ public class SystemDriver extends Driver{
     private static Scanner keyIn = new Scanner (System.in);
 
     public static void main(String[] args) {
+        //initialize system core
         SystemCore sysCore = init();
         int choice;
 
         while (true) {
 
+            //call handle menu and set return to choice
             choice = handleMenu();
+
             switch (choice) {
                 case 1:
                     sysCore.registerNewPatient();
                     break;
 
                 case 2:
-                    sysCore.scheduleAppointment();
+                    //sysCore.scheduleAppointment();
+                    //needs to have patient first
                     break;
 
                 case 3:
-                    sysCore.scheduleFollowUp();
+                    //sysCore.scheduleFollowUp();
+                    //also needs a patient first
                     break;
 
                 case 4:
-                    sysCore.pullDetails();
+                    System.out.println(sysCore.pullDetails());
                     break;
 
                 case 5:
@@ -85,7 +90,13 @@ public class SystemDriver extends Driver{
         return choice;
     }
 
-    static SystemCore init ()
+    //method: init
+    //functionality: initializes the current working object by either loading a previous state
+    //                  or creating a new one
+    //args: none
+    //returns: current working system core
+    //needs to be tested
+    private static SystemCore init ()
     {
         SystemCore sysCore = null;
         int loadState;
@@ -127,6 +138,10 @@ public class SystemDriver extends Driver{
         return sysCore;
     }
 
+    //method: loadState
+    //functionality: loads a previous system object
+    //args: none
+    //returns: loaded system core
     static SystemCore loadState ()
     {
         SystemCore sysCore = null;
@@ -152,7 +167,12 @@ public class SystemDriver extends Driver{
         return sysCore;
     }
 
-    static void saveState (SystemCore S)
+    //method: saveState
+    //functionality: saves the current system object for reuse
+    //args: SystemCore to save
+    //returns: none
+    //also needs testing
+    private static void saveState (SystemCore S)
     {
         Scanner keyin = new Scanner(System.in);
         String filename;

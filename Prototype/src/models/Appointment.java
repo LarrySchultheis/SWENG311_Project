@@ -71,7 +71,10 @@ public class Appointment extends Model {
     public String getInfo ()
     {
         String s = "";
-
+        s += "Appointment Date: " + this.date;
+        s += "Appointment Time: " + this.time;
+        s += "Appointment Reason: " + this.reason;
+        s += "Treatment Prescribed: " + this.treatmentPrescribed;
         return s;
     }
 }
