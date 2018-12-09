@@ -184,8 +184,8 @@ public class Patient extends Model {
         s += "\nPatient ID: " + patientID;
         s += "\nName: " + name;
         s += "\nGender: " + gender;
-        s += "\nDate: " + initialDate;
-        s += "\nTime: " + initialTime;
+        s += "\nDate of Registry: " + initialDate;
+        s += "\nTime of Registry: " + initialTime;
         s += "\nDoctor: " + doctor;
         s += "\nNurse: " + nurse;
         s += "\nIllness " + illness;
@@ -193,6 +193,12 @@ public class Patient extends Model {
 
         s += "\n\nInsurance Details: " + insurance.getInfo();
         s += "\n";
+
+        s += "\nAppointment Info:";
+        for (Appointment A : appointments)
+        {
+            s += A.getInfo();
+        }
 
         return s;
     }

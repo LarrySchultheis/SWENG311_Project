@@ -25,20 +25,22 @@ public class SystemDriver extends Driver{
                     break;
 
                 case 2:
-                    //sysCore.scheduleAppointment();
-                    //needs to have patient first
+                    sysCore.scheduleAppointment();
                     break;
 
                 case 3:
-                    //sysCore.scheduleFollowUp();
-                    //also needs a patient first
+                    sysCore.scheduleFollowUp();
                     break;
 
                 case 4:
-                    System.out.println(sysCore.pullDetails());
+                    System.out.println(sysCore.pullAllPatientDetails());
                     break;
 
                 case 5:
+                    System.out.println(sysCore.pullSpecificDetails());
+                    break;
+
+                case 6:
                     saveState(sysCore);
                     break;
 
@@ -46,7 +48,7 @@ public class SystemDriver extends Driver{
                     System.out.println("This should never happen but this is the default case");
                     break;
             }
-            if (choice == 5)
+            if (choice == 6)
                 break;
         }
         System.exit(0);
@@ -63,8 +65,9 @@ public class SystemDriver extends Driver{
             System.out.println("\t1.) Register a new patient");
             System.out.println("\t2.) Schedule an appointment");
             System.out.println("\t3.) Schedule a follow up date");
-            System.out.println("\t4.) Display specific patient details");
-            System.out.println("\t5.) Save and exit");
+            System.out.println("\t4.) Display all patient details");
+            System.out.println("\t5.) Display specific details");
+            System.out.println("\t6.) Save and exit");
 
             while (true) {
 
@@ -79,11 +82,11 @@ public class SystemDriver extends Driver{
                 }
             }
 
-            if (choice >= 1 && choice <= 5)
+            if (choice >= 1 && choice <= 6)
                 break;
 
             else {
-                System.out.println("Please choose a valid option 1 - 5");
+                System.out.println("Please choose a valid option 1 - 6");
                 continue;
             }
         }
@@ -142,7 +145,7 @@ public class SystemDriver extends Driver{
     //functionality: loads a previous system object
     //args: none
     //returns: loaded system core
-    static SystemCore loadState ()
+    private static SystemCore loadState ()
     {
         SystemCore sysCore = null;
         Scanner keyin = new Scanner(System.in);

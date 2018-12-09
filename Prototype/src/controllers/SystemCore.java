@@ -4,7 +4,6 @@ import models.Appointment;
 import models.FollowUp;
 import models.Patient;
 
-import javax.tools.ForwardingFileObject;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -14,6 +13,10 @@ public class SystemCore extends Controller {
     private ArrayList<Appointment> allAppointments;
     private ArrayList<FollowUp> allFollowUps;
 
+    private final String regexletters = "[A-Z a-z'\\-]+";
+    private final String regexdate = "\\d{2}/\\d{2}/\\d{4}";
+    private final String regextime = "\\d{2}:\\d{2}";
+
     public SystemCore ()
     {
         patients = new ArrayList<>();
@@ -21,17 +24,11 @@ public class SystemCore extends Controller {
         allFollowUps = new ArrayList<>();
     }
 
-    //I moved this out here so I could use regex stuff.  It's ugly, but functional
-    private final String regexletters = "[A-Z a-z'\\-]+";
-    private final String regexkdate = "\\d{2}/\\d{2}/\\d{4}";
-    private final String regextime = "\\d{2}:\\d{2}";
-
-
 
     //method registerNewPatient
     //registers a new patient with user entered data
-    //returns: the Patient created
-    public Patient registerNewPatient ()
+    //returns: the Patient created -- could be void
+    public void registerNewPatient ()
     {
         String name, gender, doc, nurse, illness,
                 meds, companyName, planName,
@@ -56,7 +53,7 @@ public class SystemCore extends Controller {
         gender = CheckGender(); //ThErE aRe MoRe ThAn TwO gEnDeRs
 
         System.out.println("Date (mm/dd/yyyy): ");
-        initialDate = checkInput(regexkdate);
+        initialDate = checkInput(regexdate);
 
         System.out.println("Time (hh:mm): ");
         initialTime = checkInput(regextime);
@@ -93,7 +90,6 @@ public class SystemCore extends Controller {
         //call addPatient function to add to patients array list
         addPatient(P);
         System.out.println("Patient has been entered into system.");
-        return P;
     }
 
     //method checkID
@@ -102,7 +98,7 @@ public class SystemCore extends Controller {
     //args: flag -- 1 for patient ID, 2 for Insurance ID
     //returns: valid ID for either insurance or patient
 
-    int checkID (int flag)
+    private int checkID (int flag)
     {
         boolean alreadyInSystem = true;
         int ID = -1; //signifies error in check
@@ -140,7 +136,7 @@ public class SystemCore extends Controller {
                             if (p.getInsurance().getID() == ID)
                             {
                                 //already in system
-                                System.out.println("Error, insurance ID already in system, pleas enter a new one");
+                                System.out.println("Error, insurance ID already in system, please enter a new one");
                                 alreadyInSystem = true;
                             }
 
@@ -148,6 +144,27 @@ public class SystemCore extends Controller {
                             {
                                 //good to go
                                 alreadyInSystem = false;
+                            }
+                        }
+
+                        else if (flag == 3)
+                        {
+                            if (p.getAppointments().isEmpty())
+                            {
+                                //same as patients, if empty nothing more to check
+                                alreadyInSystem = false;
+                                break;
+                            }
+
+                            else { //else check for duplicates
+                                for (Appointment a : p.getAppointments()) {
+                                    if (a.getAppointmentID() == ID) {
+                                        System.out.println("Error, appointment ID already in system, please enter a new one");
+                                        alreadyInSystem = true;
+                                    } else {
+                                        alreadyInSystem = false;
+                                    }
+                                }
                             }
                         }
 
@@ -162,7 +179,7 @@ public class SystemCore extends Controller {
     }
 
     //simple utility function to check for input mismatch exception
-    int checkInputMismatch ()
+    private int checkInputMismatch ()
     {
         Scanner sc = new Scanner(System.in);
         int num;
@@ -193,7 +210,7 @@ public class SystemCore extends Controller {
         return name;
     }*/
 
-    String CheckGender(){ //This is ugly, but it works
+    private String CheckGender(){ //This is ugly, but it works
         String gender;
         Scanner sc = new Scanner(System.in);
 
@@ -321,7 +338,7 @@ public class SystemCore extends Controller {
     //functionality: checks input against valid formats
     //args: the regex string of the valid format to check against
     //returns: valid String
-    String checkInput (String regex)
+    private String checkInput (String regex)
     {
         Scanner sc = new Scanner(System.in);
         String inputStr;
@@ -333,7 +350,6 @@ public class SystemCore extends Controller {
                 break;
             else{
                 System.out.println("Error, invalid format");
-                continue;
 
             }
         }
@@ -346,22 +362,57 @@ public class SystemCore extends Controller {
     //functionality: schedules a new appointment
     //arguments: patient who is associated with the appointment
     //returns: the appointment created -- it should be stored in the arrayList of appointments in the Patient object
+    //could be void
     //Needs implemented
-    public Appointment scheduleAppointment ()
+    public void scheduleAppointment ()
     {
-        Appointment A = null;
-        return A;
+        Patient P;
+        String date;
+        String time;
+        String reason;
+        String treatmentPrescribed;
+        int patindex = -1, apptID;
+
+        System.out.println("Please enter some information regarding the appointment");
+        System.out.println("Enter the ID of the patient who visited: ");
+        patindex = searchForPatient();
+        if (patindex == -1)
+        {
+            return;
+        }
+
+        System.out.println("Enter the appointment ID: ");
+        apptID = checkID(3);
+
+        System.out.println("Enter the date of this visit: ");
+        date = checkInput(regexdate);
+
+        System.out.println("Enter the time of the visit: ");
+        time = checkInput(regextime);
+
+        System.out.println("Enter the reason for this visit: ");
+        reason = checkInput(regexletters);
+
+        System.out.println("What prescription was the patient recommended: ");
+        treatmentPrescribed = checkInput(regexletters);
+
+        Appointment A = new Appointment(apptID, date, time, reason, treatmentPrescribed);
+        allAppointments.add(A);
+
+        patients.get(patindex).addAppointment(A);
+        System.out.println("Appointment has been added to " + patients.get(patindex).getName() + "'s records");
+
     }
 
     //method scheduleFollowUp
     //functionality: schedules a new follow up
     //arguments: patient who is associated with the follow up
     //returns: the follow up created -- it should be stored in the arrayList of follow ups in the Patient object
+    //could be void
     //Needs implemented -- should be very similar to scheduleAppointment
-    public FollowUp scheduleFollowUp ()
+    public void scheduleFollowUp ()
     {
-        FollowUp F = null;
-        return F;
+
     }
 
     public ArrayList<Patient> getPatients() {
@@ -392,14 +443,49 @@ public class SystemCore extends Controller {
         allFollowUps.add(F);
     }
 
+    //method searchForPatient
+    //functionality: searches for a patient in the system
+    //args:  none
+    //returns: index of patient in array list
+    int searchForPatient ()
+    {
+        int index = -1;
+        int ID = checkInputMismatch();
 
-    //method pullDetails
+        while (true)
+        {
+            if (patients.isEmpty())
+            {
+                System.out.println("No patients have been found in system, patients must be registered before an" +
+                        " this action can be completed. Returning to main menu");
+                return index;
+            }
+
+            else {
+                for (Patient p : patients) {
+                    if (p.getPatientID() == ID)
+                        index = patients.indexOf(p);
+                }
+
+                if (index == -1) {
+                    System.out.println("Error, patient with ID: " + ID + " was not found in system, try again");
+                } else {
+                    System.out.println("Patient found in system.");
+                    break;
+                }
+            }
+        }
+        return index;
+    }
+
+
+    //method pullAllPatientDetails
     //functionality: pulls details associated with ALL patients in this arrayList
     //args: none
     //returns: String holding all patient's details in system
-    public String pullDetails ()
+    public String pullAllPatientDetails ()
     {
-        String s = "";
+        String s = "_____________________________________________";
         for (Patient P : patients)
         {
             s += P.getInfo();
@@ -407,4 +493,67 @@ public class SystemCore extends Controller {
         }
         return s;
     }
+
+
+    //method: pullSpecificDetils
+    //functionality: pulls specific details e.g. patients, appointments, etc.
+    //args: none
+    //returns String holding the requested details
+    public String pullSpecificDetails ()
+    {
+        String s = "";
+
+        while (true) {
+            System.out.println("What details would you like to pull: ");
+            System.out.println("\t1.) All details on specific Patients");
+            System.out.println("\t2.) Appointment details on a patient");
+            System.out.println("\t3.) Follow Up details on a patient");
+            System.out.println("\t4.) Insurance details on a patient");
+            int choice = checkInputMismatch();
+
+            System.out.println("Enter the patient ID to view requested details: ");
+            int patIndex = searchForPatient();
+            if (patIndex == -1)
+            {
+                return "no patients in system";
+            }
+
+            if (choice == 1)
+            {
+                s += patients.get(patIndex).getInfo();
+                break;
+            }
+
+            else if (choice == 2)
+            {
+                for (Appointment a : patients.get(patIndex).getAppointments())
+                {
+                    s += a.getInfo();
+                }
+                break;
+            }
+
+            else if (choice == 3)
+            {
+                for (FollowUp f : patients.get(patIndex).getFollowUps())
+                {
+                    s += f.getInfo();
+                }
+                break;
+            }
+
+            else if (choice == 4)
+            {
+                s += patients.get(patIndex).getInsurance().getInfo();
+                break;
+            }
+
+            else
+                System.out.println("Error, invalid menu choice");
+
+        }
+
+        return s;
+    }
+
 }

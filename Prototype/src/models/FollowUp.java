@@ -10,16 +10,16 @@ public class FollowUp extends Appointment{
         additionalTreatment = "";
     }
 
-    public FollowUp (String followUpReason, String additionalTreatment, String newReason)
+    public FollowUp (String followUpReason, String additionalTreatment)
     {
         this.followUpReason = followUpReason;
         this.additionalTreatment = additionalTreatment;
     }
 
-    public FollowUp (String followUpReason, String additionalTreatment, String newReason,
+    public FollowUp (String followUpReason, String additionalTreatment, int apptID,
                      String date, String time, String reason, String treatmentPrescribed)
     {
-        super (date, time, reason, treatmentPrescribed);
+        super (apptID, date, time, reason, treatmentPrescribed);
         this.followUpReason = followUpReason;
         this.additionalTreatment = additionalTreatment;
     }

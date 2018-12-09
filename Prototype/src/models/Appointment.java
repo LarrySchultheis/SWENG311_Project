@@ -3,6 +3,7 @@ package models;
 import java.io.Serializable;
 
 public class Appointment extends Model {
+    private int appointmentID;
     private String date;
     private String time;
     private String reason;
@@ -10,14 +11,16 @@ public class Appointment extends Model {
 
     public Appointment ()
     {
+        appointmentID = 0;
         date = "";
         time = "";
         reason = "";
         treatmentPrescribed = "";
     }
 
-    public Appointment (String date, String time, String reason, String treatmentPrescribed)
+    public Appointment (int appointmentID, String date, String time, String reason, String treatmentPrescribed)
     {
+        this.appointmentID = appointmentID;
         this.date = date;
         this.time = time;
         this.reason = reason;
@@ -38,6 +41,10 @@ public class Appointment extends Model {
 
     public String getTreatmentPrescribed() {
         return treatmentPrescribed;
+    }
+
+    public int getAppointmentID() {
+        return appointmentID;
     }
 
     public boolean setDate(String date) {
@@ -71,10 +78,11 @@ public class Appointment extends Model {
     public String getInfo ()
     {
         String s = "";
-        s += "Appointment Date: " + this.date;
-        s += "Appointment Time: " + this.time;
-        s += "Appointment Reason: " + this.reason;
-        s += "Treatment Prescribed: " + this.treatmentPrescribed;
+        s += "\nAppointment Date: " + this.date;
+        s += "\nAppointment Time: " + this.time;
+        s += "\nAppointment Reason: " + this.reason;
+        s += "\nTreatment Prescribed: " + this.treatmentPrescribed;
+        s += "\n";
         return s;
     }
 }
