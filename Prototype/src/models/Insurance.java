@@ -36,6 +36,10 @@ public class Insurance extends Model {
         return agentName;
     }
 
+    public int getID() {
+        return ID;
+    }
+
     public boolean setCompanyName(String companyName) {
         this.companyName = companyName;
 
@@ -55,6 +59,10 @@ public class Insurance extends Model {
 
         boolean valid = false;
         return valid;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     @Override
