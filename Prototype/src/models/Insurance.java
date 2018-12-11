@@ -1,5 +1,6 @@
 package models;
 
+import utility.hospitalSystemUtility;
 
 public class Insurance extends Model {
 
@@ -40,30 +41,27 @@ public class Insurance extends Model {
         return ID;
     }
 
-    public boolean setCompanyName(String companyName) {
+    public void setCompanyName(String companyName) {
+        companyName = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), companyName);
         this.companyName = companyName;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setPlanName(String planName) {
+    public void setPlanName(String planName) {
+        planName = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), planName);
         this.planName = planName;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setAgentName(String agentName) {
+    public void setAgentName(String agentName) {
+        agentName = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), agentName);
         this.agentName = agentName;
-
-        boolean valid = false;
-        return valid;
     }
 
+    //omitted ID set because it should not be changed once entered
+    /*
     public void setID(int ID) {
         this.ID = ID;
     }
+    */
 
     @Override
     public String getInfo() {

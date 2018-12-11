@@ -1,6 +1,7 @@
 package drivers;
 
 import controllers.SystemCore;
+import models.FollowUp;
 
 import java.io.*;
 import java.util.InputMismatchException;
@@ -13,6 +14,7 @@ public class SystemDriver extends Driver{
         //initialize system core
         SystemCore sysCore = init();
         int choice;
+
 
         while (true) {
 
@@ -55,7 +57,7 @@ public class SystemDriver extends Driver{
 
     }
 
-    static int handleMenu ()
+    private static int handleMenu ()
     {
         int choice;
 
@@ -78,7 +80,6 @@ public class SystemDriver extends Driver{
                 catch (InputMismatchException e) {
                     System.out.println("Error, invalid input.");
                     keyIn.nextLine();
-                    continue;
                 }
             }
 
@@ -87,7 +88,6 @@ public class SystemDriver extends Driver{
 
             else {
                 System.out.println("Please choose a valid option 1 - 6");
-                continue;
             }
         }
         return choice;
@@ -118,7 +118,6 @@ public class SystemDriver extends Driver{
                     // e.printStackTrace();
                     System.out.println("Invalid input, please enter 1 or 2");
                     keyIn.nextLine();
-                    continue;
                 }
             }
 

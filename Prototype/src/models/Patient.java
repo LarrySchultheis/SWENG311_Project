@@ -1,8 +1,9 @@
 package models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-            //I added initialDate/Time to these things
+import utility.hospitalSystemUtility;
+
+//I added initialDate/Time to these things
 public class Patient extends Model {
     private String name;
     private String gender;
@@ -107,76 +108,60 @@ public class Patient extends Model {
         followUps.add(F);
     }
 
-    public boolean setInitialTime(String initialTime) {
+    public void setInitialTime(String initialTime) {
+        initialTime = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegextime(), initialTime);
         this.initialTime = initialTime;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setInitialDate(String initialDate) {
+    public void setInitialDate(String initialDate) {
+        initialDate = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexdate(), initialDate);
         this.initialDate = initialDate;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setGender(String gender) {
+    public void setGender(String gender) {
+        gender =  hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), gender);
         this.gender = gender;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setDoctor(String doctor) {
+    public void setDoctor(String doctor) {
+        doctor = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), doctor);
         this.doctor = doctor;
 
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setNurse(String nurse) {
+    public void setNurse(String nurse) {
+        nurse = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), nurse);
         this.nurse = nurse;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setIllness(String illness) {
+    public void setIllness(String illness) {
+        illness = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), illness);
         this.illness = illness;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setMedication(String medication) {
+    public void setMedication(String medication) {
+        medication = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), medication);
         this.medication = medication;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setInsurance (Insurance I)
+    //insurance input handling should be covered in insurance class setters
+    public void setInsurance (Insurance I)
     {
         this.insurance = I;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setName(String name) {
+    public void setName(String name) {
+        name = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexletters(), name);
         this.name = name;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setPatientID(int patientID) {
-        this.patientID = patientID;
-
-        boolean valid = false;
-        return valid;
+    //Omitted setID because it should not be changed once created
+    /*
+    public void setPatientID(int patientID) {
+        patientID = hospitalSystemUtility.checkInputMismatch();
     }
+    */
+
 
     @Override
     public String getInfo() {

@@ -1,3 +1,5 @@
+//System core class -- contains all functions of the system and array lists of all relevant objects
+
 package controllers;
 
 import models.Appointment;
@@ -5,17 +7,14 @@ import models.FollowUp;
 import models.Patient;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
+import utility.hospitalSystemUtility;
 
 public class SystemCore extends Controller {
     private ArrayList<Patient> patients;
     private ArrayList<Appointment> allAppointments;
     private ArrayList<FollowUp> allFollowUps;
 
-    private final String regexletters = "[A-Z a-z'\\-]+";
-    private final String regexdate = "\\d{2}/\\d{2}/\\d{4}";
-    private final String regextime = "\\d{2}:\\d{2}";
 
     public SystemCore ()
     {
@@ -44,7 +43,7 @@ public class SystemCore extends Controller {
         System.out.println("Please enter some information about the patient: ");
 
         System.out.println("Patient name:");
-        name = checkInput(regexletters);
+        name = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
         System.out.println("Patient ID");       //This does not have a failsafe yet, only way to with Regex is with Strings
         patID = checkID(1);
@@ -53,32 +52,32 @@ public class SystemCore extends Controller {
         gender = CheckGender(); //ThErE aRe MoRe ThAn TwO gEnDeRs
 
         System.out.println("Date (mm/dd/yyyy): ");
-        initialDate = checkInput(regexdate);
+        initialDate = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexdate());
 
         System.out.println("Time (hh:mm): ");
-        initialTime = checkInput(regextime);
+        initialTime = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegextime());
 
         System.out.println("Assigned doctor: ");
-        doc = checkInput(regexletters);
+        doc = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
         System.out.println("Assigned nurse: ");
-        nurse = checkInput(regexletters);
+        nurse = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
         System.out.println("Type of illness: ");
-        illness = checkInput(regexletters);
+        illness = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
         System.out.println("Medication prescribed:");
-        meds = checkInput(regexletters);
+        meds = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
         System.out.println("The following pertain to patient insurance");
         System.out.println("Company name: ");
-        companyName = checkInput(regexletters);
+        companyName = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
         System.out.println("Name of plan: ");
-        planName = checkInput(regexletters);
+        planName = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
         System.out.println("Agent name:");
-        agentName = checkInput(regexletters);
+        agentName = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
         System.out.println("Insurance ID: ");//This does not have a failsafe yet, only way to with Regex is with Strings
         insID = checkID(2);
@@ -104,7 +103,7 @@ public class SystemCore extends Controller {
         int ID = -1; //signifies error in check
 
         while (alreadyInSystem) {
-            ID = checkInputMismatch();  //check for input mismatch
+            ID = hospitalSystemUtility.checkInputMismatch();  //check for input mismatch
 
                 if (patients.isEmpty()) //if nothing in arrayList, nothing more to check
                 {
@@ -178,37 +177,38 @@ public class SystemCore extends Controller {
         return ID;
     }
 
-    //simple utility function to check for input mismatch exception
-    private int checkInputMismatch ()
+    //method searchForPatient
+    //functionality: searches for a patient in the system
+    //args:  none
+    //returns: index of patient in array list or -1 if not found
+    private int searchForPatient ()
     {
-        Scanner sc = new Scanner(System.in);
-        int num;
+        int index = -1;
+        int ID = hospitalSystemUtility.checkInputMismatch();
 
-            while (true) {
-                try {
-                    num = sc.nextInt();
-                    break;
-                } catch (InputMismatchException e) {
-                    System.out.println("Error, please enter only number for the ID");
-                    sc.nextLine();
-                }
+            if (patients.isEmpty())
+            {
+                System.out.println("No patients have been found in system, patients must be registered before an" +
+                        " this action can be completed. Returning to main menu");
+                return index;
             }
 
-            return num;
+            else {
+                for (Patient p : patients) {
+                    if (p.getPatientID() == ID)
+                        index = patients.indexOf(p);
+                }
+
+                if (index == -1) {
+                    System.out.println("Error, patient with ID: " + ID + " was not found in system, try again");
+                } else {
+                    System.out.println("Patient found in system.");
+                   // break;
+                }
+            }
+        return index;
     }
 
-    /*
-    String CheckName(boolean info){
-        info = false;
-        String name;
-
-        while (!info) {
-            name = sc.nextLine();
-            info = name.matches("[A-Z a-z'\\-]+");  //Allows letters
-        }
-
-        return name;
-    }*/
 
     private String CheckGender(){ //This is ugly, but it works
         String gender;
@@ -223,138 +223,6 @@ public class SystemCore extends Controller {
         }
 
         return gender;
-    }
-
-    /*
-    String CheckDate(boolean info){
-        info = false;
-        String initialDate = "";
-
-        while (!info) {
-            initialDate = sc.nextLine();
-            info = initialDate.matches("\\d{2}/\\d{2}/\\d{4}");  //This doesn't check if date is legitimate
-        }
-
-        return initialDate;
-    }
-
-    String CheckTime(boolean info){
-        info = false;
-        String initialTime = "";
-
-        while (!info) {
-            initialTime = sc.nextLine();
-            info = initialTime.matches("\\d{2}:\\d{2}");  //This doesn't check if time is legitimate
-        }
-
-        return initialTime;
-    }
-
-    String DoctorChecker(boolean info){   //I don't know why I gave this a different name
-        info = false;
-        String doc = "";
-
-        while (!info) {
-            doc = sc.nextLine();
-            info = doc.matches("[A-Z a-z'\\-\\.]+");  //Allows letters
-        }
-
-        return doc;
-    }
-
-    String CheckNurse(boolean info){
-        info = false;
-        String nurse = "";
-
-        while (!info) {
-            nurse = sc.nextLine();
-            info = nurse.matches("[A-Z a-z'\\-\\.]+");  //Allows letters
-        }
-
-        return nurse;
-    }
-
-    String CheckIllness(boolean info){
-        info = false;
-        String illness = "";
-
-
-        while (!info) {
-            illness = sc.nextLine();
-            info = illness.matches("[A-Z a-z'\\-\\.]+");  //Allows letters
-        }
-
-        return illness;
-    }
-
-    String CheckPrescription(boolean info){
-        info = false;
-        String meds = "";
-
-        while (!info) {
-            meds = sc.nextLine();
-            info = meds.matches("[A-Z a-z'\\-\\.]+");  //Allows letters
-        }
-
-        return meds;
-    }
-
-    String CheckCompany(boolean info){
-        info = false;
-        String companyName = "";
-
-        while (!info) {
-            companyName = sc.nextLine();
-            info = companyName.matches("[A-Z a-z'\\-\\.]+");  //Allows letters
-        }
-
-        return companyName;
-    }
-
-    String CheckInsurance(){
-        info = false;
-
-        while (!info) {
-            planName = sc.nextLine();
-            info = planName.matches("[A-Z a-z'\\-\\.]+");  //Allows letters
-        }
-
-        return planName;
-    }
-
-    String  CheckAgent(){
-        info = false;
-
-        while (!info) {
-            agentName = sc.nextLine();
-            info = agentName.matches("[A-Z a-z'\\-\\.]+");  //Allows letters
-        }
-
-        return agentName;
-    }
-    */
-
-    //method: checkInput
-    //functionality: checks input against valid formats
-    //args: the regex string of the valid format to check against
-    //returns: valid String
-    private String checkInput (String regex)
-    {
-        Scanner sc = new Scanner(System.in);
-        String inputStr;
-
-        while (true)
-        {
-            inputStr = sc.nextLine();
-            if (inputStr.matches(regex))
-                break;
-            else{
-                System.out.println("Error, invalid format");
-
-            }
-        }
-
-        return inputStr;
     }
 
 
@@ -385,16 +253,16 @@ public class SystemCore extends Controller {
         apptID = checkID(3);
 
         System.out.println("Enter the date of this visit: ");
-        date = checkInput(regexdate);
+        date = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexdate());
 
         System.out.println("Enter the time of the visit: ");
-        time = checkInput(regextime);
+        time = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegextime());
 
         System.out.println("Enter the reason for this visit: ");
-        reason = checkInput(regexletters);
+        reason = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexLetNumSpace());
 
         System.out.println("What prescription was the patient recommended: ");
-        treatmentPrescribed = checkInput(regexletters);
+        treatmentPrescribed = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexLetNumSpace());
 
         Appointment A = new Appointment(apptID, date, time, reason, treatmentPrescribed);
         allAppointments.add(A);
@@ -443,40 +311,6 @@ public class SystemCore extends Controller {
         allFollowUps.add(F);
     }
 
-    //method searchForPatient
-    //functionality: searches for a patient in the system
-    //args:  none
-    //returns: index of patient in array list
-    int searchForPatient ()
-    {
-        int index = -1;
-        int ID = checkInputMismatch();
-
-        while (true)
-        {
-            if (patients.isEmpty())
-            {
-                System.out.println("No patients have been found in system, patients must be registered before an" +
-                        " this action can be completed. Returning to main menu");
-                return index;
-            }
-
-            else {
-                for (Patient p : patients) {
-                    if (p.getPatientID() == ID)
-                        index = patients.indexOf(p);
-                }
-
-                if (index == -1) {
-                    System.out.println("Error, patient with ID: " + ID + " was not found in system, try again");
-                } else {
-                    System.out.println("Patient found in system.");
-                    break;
-                }
-            }
-        }
-        return index;
-    }
 
 
     //method pullAllPatientDetails
@@ -485,9 +319,10 @@ public class SystemCore extends Controller {
     //returns: String holding all patient's details in system
     public String pullAllPatientDetails ()
     {
-        String s = "_____________________________________________";
+        String s = "";
         for (Patient P : patients)
         {
+            s += "_____________________________________________";
             s += P.getInfo();
 
         }
@@ -509,13 +344,13 @@ public class SystemCore extends Controller {
             System.out.println("\t2.) Appointment details on a patient");
             System.out.println("\t3.) Follow Up details on a patient");
             System.out.println("\t4.) Insurance details on a patient");
-            int choice = checkInputMismatch();
+            int choice = hospitalSystemUtility.checkInputMismatch();
 
             System.out.println("Enter the patient ID to view requested details: ");
             int patIndex = searchForPatient();
             if (patIndex == -1)
             {
-                return "no patients in system";
+                return "patient not found in system";
             }
 
             if (choice == 1)

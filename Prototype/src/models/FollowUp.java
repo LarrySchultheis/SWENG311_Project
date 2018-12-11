@@ -1,5 +1,7 @@
 package models;
 
+import utility.hospitalSystemUtility;
+
 public class FollowUp extends Appointment{
     private String followUpReason;
     private String additionalTreatment;
@@ -32,59 +34,55 @@ public class FollowUp extends Appointment{
         return additionalTreatment;
     }
 
-    @Override
-    public String getDate() {
-        return super.getDate();
-    }
+//    @Override
+//    public String getDate() {
+//        return super.getDate();
+//    }
+//
+//    @Override
+//    public String getReason() {
+//        return super.getReason();
+//    }
+//
+//    @Override
+//    public String getTime() {
+//        return super.getTime();
+//    }
+//
+//    @Override
+//    public String getTreatmentPrescribed() {
+//        return super.getTreatmentPrescribed();
+//    }
 
-    @Override
-    public String getReason() {
-        return super.getReason();
-    }
-
-    @Override
-    public String getTime() {
-        return super.getTime();
-    }
-
-    @Override
-    public String getTreatmentPrescribed() {
-        return super.getTreatmentPrescribed();
-    }
-
-    public boolean setFollowUpReason(String followUpReason) {
+    public void setFollowUpReason(String followUpReason) {
+        followUpReason = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexLetNumSpace(), followUpReason);
         this.followUpReason = followUpReason;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setAdditionalTreatment(String additionalTreatment) {
+    public void setAdditionalTreatment(String additionalTreatment) {
+        additionalTreatment = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexLetNumSpace(), additionalTreatment);
         this.additionalTreatment = additionalTreatment;
-
-        boolean valid = false;
-        return valid;
     }
 
-    @Override
-    public boolean setDate(String date) {
-        return super.setDate(date);
-    }
-
-    @Override
-    public boolean setTime(String time) {
-        return super.setTime(time);
-    }
-
-    @Override
-    public boolean setReason(String reason) {
-        return super.setReason(reason);
-    }
-
-    @Override
-    public boolean setTreatmentPrescribed(String treatmentPrescribed) {
-        return super.setTreatmentPrescribed(treatmentPrescribed);
-    }
+//    @Override
+//    public boolean setDate(String date) {
+//        return super.setDate(date);
+//    }
+//
+//    @Override
+//    public boolean setTime(String time) {
+//        return super.setTime(time);
+//    }
+//
+//    @Override
+//    public boolean setReason(String reason) {
+//        return super.setReason(reason);
+//    }
+//
+//    @Override
+//    public boolean setTreatmentPrescribed(String treatmentPrescribed) {
+//        return super.setTreatmentPrescribed(treatmentPrescribed);
+//    }
 
     @Override
     public String getInfo() {

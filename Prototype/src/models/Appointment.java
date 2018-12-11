@@ -1,6 +1,6 @@
 package models;
 
-import java.io.Serializable;
+import utility.hospitalSystemUtility;
 
 public class Appointment extends Model {
     private int appointmentID;
@@ -47,32 +47,25 @@ public class Appointment extends Model {
         return appointmentID;
     }
 
-    public boolean setDate(String date) {
+    public void setDate(String date) {
+        date = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexdate(), date);
         this.date = date;
 
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setTime(String time) {
+    public void setTime(String time) {
+        time = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegextime(), time);
         this.time = time;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setReason(String reason) {
+    public void setReason(String reason) {
+        reason = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexLetNumSpace(), reason);
         this.reason = reason;
-
-        boolean valid = false;
-        return valid;
     }
 
-    public boolean setTreatmentPrescribed(String treatmentPrescribed) {
+    public void setTreatmentPrescribed(String treatmentPrescribed) {
+        treatmentPrescribed = hospitalSystemUtility.checkStringSetter(hospitalSystemUtility.getRegexLetNumSpace(), treatmentPrescribed);
         this.treatmentPrescribed = treatmentPrescribed;
-
-        boolean valid = false;
-        return valid;
     }
 
     public String getInfo ()
