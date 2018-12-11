@@ -3,8 +3,6 @@
 
 package utility;
 
-import models.Patient;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

@@ -164,6 +164,7 @@ public class Patient extends Model {
 
 
     @Override
+    //See Model class for info
     public String getInfo() {
         String s = "";
         s += "\nPatient ID: " + patientID;
@@ -176,14 +177,17 @@ public class Patient extends Model {
         s += "\nIllness " + illness;
         s += "\nMedication " + medication;
 
-        s += "\n\nInsurance Details: " + insurance.getInfo();
+        s += "\n______________________________________________________________";
+        s += "\nInsurance Details: " + insurance.getInfo();
 
+        s += "\n______________________________________________________________";
         s += "\nAppointment Info: ";
         for (Appointment A : appointments)
         {
             s += A.getInfo();
         }
 
+        s += "\n______________________________________________________________";
         s += "\nFollow Up Info: ";
         for (FollowUp F : followUps)
         {

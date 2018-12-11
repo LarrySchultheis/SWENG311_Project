@@ -1,4 +1,6 @@
 //System core class -- contains all functions of the system and array lists of all relevant objects
+//Note: all regex, setter, and input mismatch handling is done via HospitalSystemUtility -- see class for more details
+//ID checking and searching are done in this class
 
 package controllers;
 
@@ -92,9 +94,9 @@ public class SystemCore extends Controller {
     }
 
     //method checkID
-    //functionality: full ID checking for both patient and insurance IDs -- checks for input mismatch and IDs already
-    //                  in system
-    //args: flag -- 1 for patient ID, 2 for Insurance ID
+    //functionality: full ID checking for patient, insurance, appointment and follow up IDs -- checks for
+    //                  input mismatch and IDs already in system
+    //args: flag -- 1 for patient ID, 2 for Insurance ID, 3 for Appointment and 4 for Follow up
     //returns: valid ID for either insurance or patient
 
     private int checkID (int flag)
@@ -168,15 +170,16 @@ public class SystemCore extends Controller {
                             }
                         }
 
-                        else if (flag == 4)
+                        else if (flag == 4) //check follow ups
                         {
+                            //same as patients, if empty nothing more to check
                             if (allFollowUps.isEmpty())
                             {
                                 alreadyInSystem = false;
                                 break;
                             }
 
-                            else
+                            else //else check for duplicates
                             {
                                 for (FollowUp f : allFollowUps)
                                 {
@@ -197,6 +200,7 @@ public class SystemCore extends Controller {
                         else {  //should never happen but you know
                             System.out.println("bad flag");
                             alreadyInSystem = false;
+                            break;
                         }
                     }
                 }
@@ -237,7 +241,7 @@ public class SystemCore extends Controller {
     }
 
 
-    private String CheckGender(){ //This is ugly, but it works
+    private String CheckGender(){
         String gender;
         Scanner sc = new Scanner(System.in);
 
@@ -377,14 +381,14 @@ public class SystemCore extends Controller {
     //returns: String holding all patient's details in system
     public String pullAllPatientDetails ()
     {
-        String s = "";
+        String s = "\nPatient Info:";
         for (Patient P : patients)
         {
-            s += "\n_____________________________________________";
+            s += "\n####################################################################\n\n";
             s += P.getInfo();
 
         }
-        return s;
+        return s+="\n###################################################################\n";
     }
 
 
@@ -394,7 +398,7 @@ public class SystemCore extends Controller {
     //returns String holding the requested details
     public String pullSpecificDetails ()
     {
-        String s = "";
+        String s = "\n\n###################################################################";
 
         while (true) {
             System.out.println("What details would you like to pull: ");
@@ -446,7 +450,7 @@ public class SystemCore extends Controller {
 
         }
 
-        return s;
+        return s += "\n###################################################################\n";
     }
 
 }

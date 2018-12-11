@@ -1,13 +1,12 @@
 package drivers;
 
 import controllers.SystemCore;
-import models.FollowUp;
 
 import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class SystemDriver extends Driver{
+public class SystemDriver {
     private static Scanner keyIn = new Scanner (System.in);
 
     public static void main(String[] args) {
@@ -103,12 +102,16 @@ public class SystemDriver extends Driver{
     {
         SystemCore sysCore = null;
         int loadState;
-        System.out.println("Welcome to the Hospital Management System.");
+        System.out.println("################################################");
+        System.out.println("#  Welcome to the Hospital Management System.  #");
+        System.out.println("# ____________________________________________ #");
+        System.out.println("#   By: Larry Schultheis and Dan Farquhar      #");
+        System.out.println("################################################");
 
         while (true) {
 
             while (true) {
-                System.out.println("Would you like to load a previous System state?");
+                System.out.println("\nWould you like to load a previous System state?");
                 System.out.println("\t1.) Yes, there is a previous system state that exists\n\t2.) No, I would like to create a new System");
                 try {
                     loadState = keyIn.nextInt();
