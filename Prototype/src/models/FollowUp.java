@@ -5,6 +5,7 @@ import utility.hospitalSystemUtility;
 public class FollowUp extends Appointment{
     private String followUpReason;
     private String additionalTreatment;
+    private int followUpID;
 
     public FollowUp ()
     {
@@ -12,8 +13,9 @@ public class FollowUp extends Appointment{
         additionalTreatment = "";
     }
 
-    public FollowUp (String followUpReason, String additionalTreatment)
+    public FollowUp (String followUpReason, String additionalTreatment, int followUpID)
     {
+        this.followUpID = followUpID;
         this.followUpReason = followUpReason;
         this.additionalTreatment = additionalTreatment;
     }
@@ -64,6 +66,9 @@ public class FollowUp extends Appointment{
         this.additionalTreatment = additionalTreatment;
     }
 
+
+
+
 //    @Override
 //    public boolean setDate(String date) {
 //        return super.setDate(date);
@@ -86,9 +91,12 @@ public class FollowUp extends Appointment{
 
     @Override
     public String getInfo() {
-        String s = super.getInfo();
-        s += "Follow Up Reason: " + this.followUpReason;
-        s += "Additional Treatment Prescribed: " + this.additionalTreatment;
+        String s = "";
+        s += "\nFollow Up ID: " + this.followUpID;
+        s += "\nDate: " + this.getDate();
+        s += "\nTime: " + this.getTime();
+        s += "\nFollow Up Reason: " + this.followUpReason;
+        s += "\nAdditional Treatment Prescribed: " + this.additionalTreatment;
         return s;
     }
 }

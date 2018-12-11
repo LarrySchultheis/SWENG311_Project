@@ -18,6 +18,11 @@ public class Appointment extends Model {
         treatmentPrescribed = "";
     }
 
+    public Appointment (int appointmentID)
+    {
+        this.appointmentID = appointmentID;
+    }
+
     public Appointment (int appointmentID, String date, String time, String reason, String treatmentPrescribed)
     {
         this.appointmentID = appointmentID;
@@ -71,6 +76,7 @@ public class Appointment extends Model {
     public String getInfo ()
     {
         String s = "";
+        s += "\nAppointment ID: " + this.appointmentID;
         s += "\nAppointment Date: " + this.date;
         s += "\nAppointment Time: " + this.time;
         s += "\nAppointment Reason: " + this.reason;

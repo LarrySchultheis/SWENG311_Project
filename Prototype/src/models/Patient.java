@@ -177,12 +177,17 @@ public class Patient extends Model {
         s += "\nMedication " + medication;
 
         s += "\n\nInsurance Details: " + insurance.getInfo();
-        s += "\n";
 
-        s += "\nAppointment Info:";
+        s += "\nAppointment Info: ";
         for (Appointment A : appointments)
         {
             s += A.getInfo();
+        }
+
+        s += "\nFollow Up Info: ";
+        for (FollowUp F : followUps)
+        {
+            s += F.getInfo();
         }
 
         return s;

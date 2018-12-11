@@ -148,7 +148,7 @@ public class SystemCore extends Controller {
 
                         else if (flag == 3)
                         {
-                            if (p.getAppointments().isEmpty())
+                            if (allAppointments.isEmpty())
                             {
                                 //same as patients, if empty nothing more to check
                                 alreadyInSystem = false;
@@ -156,11 +156,38 @@ public class SystemCore extends Controller {
                             }
 
                             else { //else check for duplicates
-                                for (Appointment a : p.getAppointments()) {
+                                for (Appointment a : allAppointments) {
                                     if (a.getAppointmentID() == ID) {
                                         System.out.println("Error, appointment ID already in system, please enter a new one");
                                         alreadyInSystem = true;
+                                        break;
                                     } else {
+                                        alreadyInSystem = false;
+                                    }
+                                }
+                            }
+                        }
+
+                        else if (flag == 4)
+                        {
+                            if (allFollowUps.isEmpty())
+                            {
+                                alreadyInSystem = false;
+                                break;
+                            }
+
+                            else
+                            {
+                                for (FollowUp f : allFollowUps)
+                                {
+                                    if (f.getAppointmentID() == ID)
+                                    {
+                                        System.out.println("Error, follow up ID already in system, please enter a new one");
+                                        alreadyInSystem = true;
+                                    }
+
+                                    else
+                                    {
                                         alreadyInSystem = false;
                                     }
                                 }
@@ -245,9 +272,7 @@ public class SystemCore extends Controller {
         System.out.println("Enter the ID of the patient who visited: ");
         patindex = searchForPatient();
         if (patindex == -1)
-        {
             return;
-        }
 
         System.out.println("Enter the appointment ID: ");
         apptID = checkID(3);
@@ -280,6 +305,41 @@ public class SystemCore extends Controller {
     //Needs implemented -- should be very similar to scheduleAppointment
     public void scheduleFollowUp ()
     {
+        Patient P;
+        String followUpReason, additionalTreatment, date, time;
+        int apptID, patIndex = -1;
+
+        System.out.println("Please enter some information about the follow up: ");
+        System.out.println("Enter the ID of the Patient who visited: ");
+        patIndex = searchForPatient();
+
+        if (patIndex == -1)
+            return;
+
+        System.out.println("Enter the follow up ID: ");
+        apptID = checkID(4);
+
+        System.out.println("Enter the date of this follow up: ");
+        date = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexdate());
+
+        System.out.println("Enter the time of this visit: ");
+        time = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegextime());
+
+        System.out.println("Enter the reason for this follow up: ");
+        followUpReason = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexLetNumSpace());
+
+        System.out.println("Enter any additional treatment prescribed: ");
+        additionalTreatment = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexLetNumSpace());
+
+        FollowUp F = new FollowUp(followUpReason, additionalTreatment, apptID);
+        F.setDate(date);
+        F.setTime(time);
+
+        allFollowUps.add(F);
+        P = patients.get(patIndex);
+        P.addFollowUp(F);
+
+        System.out.println("Follow up has been added to " + P.getName() + "'s records");
 
     }
 
@@ -311,8 +371,6 @@ public class SystemCore extends Controller {
         allFollowUps.add(F);
     }
 
-
-
     //method pullAllPatientDetails
     //functionality: pulls details associated with ALL patients in this arrayList
     //args: none
@@ -322,7 +380,7 @@ public class SystemCore extends Controller {
         String s = "";
         for (Patient P : patients)
         {
-            s += "_____________________________________________";
+            s += "\n_____________________________________________";
             s += P.getInfo();
 
         }
