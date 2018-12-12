@@ -38,7 +38,6 @@ public class SystemCore extends Controller {
 
 
         int insID, patID;
-       // boolean info = false;   //Booleans start as false and start as false in the voids
 
         Patient P;
 
@@ -53,7 +52,7 @@ public class SystemCore extends Controller {
         System.out.println("Gender: ");
         gender = CheckGender(); //ThErE aRe MoRe ThAn TwO gEnDeRs
 
-        System.out.println("Date (mm/dd/yyyy): ");
+        System.out.println("Date (dd/mm/yyyy): ");
         initialDate = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexdate());
 
         System.out.println("Time (hh:mm): ");
@@ -281,10 +280,10 @@ public class SystemCore extends Controller {
         System.out.println("Enter the appointment ID: ");
         apptID = checkID(3);
 
-        System.out.println("Enter the date of this visit: ");
+        System.out.println("Enter the date of this visit (mm/dd/yyyy): ");
         date = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexdate());
 
-        System.out.println("Enter the time of the visit: ");
+        System.out.println("Enter the time of the visit (hh:mm): ");
         time = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegextime());
 
         System.out.println("Enter the reason for this visit: ");
@@ -323,10 +322,10 @@ public class SystemCore extends Controller {
         System.out.println("Enter the follow up ID: ");
         apptID = checkID(4);
 
-        System.out.println("Enter the date of this follow up: ");
+        System.out.println("Enter the date of this follow up (mm/dd/yyyy): ");
         date = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexdate());
 
-        System.out.println("Enter the time of this visit: ");
+        System.out.println("Enter the time of this visit (hh:mm): ");
         time = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegextime());
 
         System.out.println("Enter the reason for this follow up: ");
@@ -406,14 +405,29 @@ public class SystemCore extends Controller {
             System.out.println("\t2.) Appointment details on a patient");
             System.out.println("\t3.) Follow Up details on a patient");
             System.out.println("\t4.) Insurance details on a patient");
+            System.out.println("\t5.) Medication and treatment details on a specific patient");
+            System.out.println("\t6.) Medication and treatment details on all patients");
             int choice = hospitalSystemUtility.checkInputMismatch();
+
+
+            if (choice == 6)
+            {
+                for (int i = 0; i < patients.size(); i ++)
+                {
+                    s += getTreatmentHistory(i);
+                    s += "\n_________________________________________________________________\n";
+                }
+                break;
+            }
 
             System.out.println("Enter the patient ID to view requested details: ");
             int patIndex = searchForPatient();
+
             if (patIndex == -1)
             {
                 return "patient not found in system";
             }
+
 
             if (choice == 1)
             {
@@ -445,12 +459,53 @@ public class SystemCore extends Controller {
                 break;
             }
 
+            else if (choice == 5)
+            {
+                s += getTreatmentHistory(patIndex);
+                break;
+            }
+
             else
                 System.out.println("Error, invalid menu choice");
 
         }
 
         return s += "\n###################################################################\n";
+    }
+
+    //method: getTreatmentHistory
+    //functionality: gets useful information regarding a patient's treatment history
+    //args: index of the patient in this class's array list
+    //returns: string containing the treatment history of the patient
+    private String getTreatmentHistory (int patIndex)
+    {
+        String s = "\nMedication and treatment history for " + patients.get(patIndex).getName();
+
+        s += "\n\nUpon Registry:\n";
+        s += "\nIllness: " + patients.get(patIndex).getIllness();
+        s += "\nTreatment: " + patients.get(patIndex).getMedication();
+        s += "\n----------------------------------------------------\n";
+        s += "Appointments:\n";
+        for (Appointment a : patients.get(patIndex).getAppointments())
+        {
+            s += "\nIllness: " + a.getReason();
+            s += "\nTreatment: " + a.getTreatmentPrescribed();
+            s += "\n";
+
+        }
+        s += "\n----------------------------------------------------\n";
+
+        s += "Follow Ups: \n";
+        for (FollowUp f : patients.get(patIndex).getFollowUps())
+        {
+            s += "\nIllness: " + f.getFollowUpReason();
+            s += "\nTreatment: " + f.getAdditionalTreatment();
+            s += "\n";
+        }
+        s += "\n----------------------------------------------------\n";
+
+
+        return s;
     }
 
 }
