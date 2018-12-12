@@ -46,11 +46,11 @@ public class SystemCore extends Controller {
         System.out.println("Patient name:");
         name = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexletters());
 
-        System.out.println("Patient ID");       //This does not have a failsafe yet, only way to with Regex is with Strings
+        System.out.println("Patient ID");
         patID = checkID(1);
 
         System.out.println("Gender: ");
-        gender = CheckGender(); //ThErE aRe MoRe ThAn TwO gEnDeRs
+        gender = CheckGender();
 
         System.out.println("Date (dd/mm/yyyy): ");
         initialDate = hospitalSystemUtility.checkInput(hospitalSystemUtility.getRegexdate());

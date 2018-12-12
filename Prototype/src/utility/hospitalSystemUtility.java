@@ -16,7 +16,7 @@ public class hospitalSystemUtility {
     private static final String regexdate = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/((19|2[0-9])[0-9]{2})";
 
     //allows only time format
-    private static final String regextime = "\\d{2}:\\d{2}";
+    private static final String regextime = "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]";
 
     //similar to the first, but also allows numbers -- used mostly for reason and treatment attributes as quantities would
     //be relevant to that data
